@@ -3,8 +3,7 @@ import Pusher from "pusher";
 import {adjectives, animals, colors, uniqueNamesGenerator} from "unique-names-generator";
 import {redirect} from "next/navigation";
 
-export async function sendRealTimeMessage(formData: FormData) {
-    console.log("Pusher variables", process.env.PUSHER_APP_ID, process.env.PUSHER_KEY, process.env.PUSHER_SECRET, process.env.PUSHER_CLUSTER);
+export async function sendRealTimeMessageAction(formData: FormData) {
     const pusher = new Pusher({
         appId: process.env.PUSHER_APP_ID as string,
         key: process.env.PUSHER_KEY as string,
@@ -18,7 +17,7 @@ export async function sendRealTimeMessage(formData: FormData) {
         separator: '-',
     });
     await pusher.trigger("repository-channel", "add-repository", {
-        message: formData.get("repository"),
+        url: formData.get("repository"),
         randomName: randomName
     });
     redirect(`/room/${randomName}`);
